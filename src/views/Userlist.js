@@ -1,16 +1,20 @@
 import React from 'react'
-import { View, Text } from 'react-native'
-import { ListItem } from 'react-native-elements'
-import { FlatList } from 'react-native-gesture-handler'
+import { View, Text, FlatList } from 'react-native'
+import { ListItem, Avatar } from 'react-native-elements'
+
 import users from '../data/users'
 
 export default props => {
 
     function getUserItem({ item: user }) {
         return (
-            <ListItem 
-                leftAvatar={{source: {uri: user.avatarUrl}}}
-            />
+            <ListItem bottomDivider >
+                <Avatar source={{ uri: user.avatarUrl }} onPress={() => props.navigation.navigate('UserForm')} />
+                <ListItem.Content>
+                    <ListItem.Title>{user.name}</ListItem.Title>
+                    <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
+                </ListItem.Content>      
+            </ListItem>
         )
     }
 
