@@ -1,18 +1,38 @@
 import React from 'react'
+import { Alert } from 'react-native'
 import { View, Text, FlatList } from 'react-native'
 import { ListItem, Avatar, Button, Icon } from 'react-native-elements'
 
 import users from '../data/users'
 
 export default props => {
-    
+
+    function confirmeUserDeletion(user) {
+        Alert.alert('Excluir Usuário', 'Deseja excluir o usuário?', [
+            {
+                text: "sim",
+                onPress(){
+                    console.warn('entrou aqui' + user.id)
+                }
+            },
+            {
+                text: 'Não'
+            }
+        ] )
+    }
+
     function getActions(user) {
-        return(
+        return (
             <>
-                <Button 
+                <Button
                     onPress={() => props.navigation.navigate('UserForm', user)}
                     type="clear"
-                    icon={<Icon name="edit" size={25} color="orange"/>}
+                    icon={<Icon name="edit" size={20} color="orange" />}
+                />
+                <Button
+                    onPress={() => confirmeUserDeletion(user)}
+                    type="clear"
+                    icon={<Icon name="delete" size={20} color="red" />}
                 />
             </>
         )
@@ -20,12 +40,16 @@ export default props => {
 
     function getUserItem({ item: user }) {
         return (
-            <ListItem bottomDivider rightElement={getActions(user)}>
-                <Avatar source={{ uri: user.avatarUrl }} onPress={() => props.navigation.navigate('UserForm')} />
+            <ListItem
+                bottomDivider
+
+            >
+                <Avatar source={{ uri: user.avatarUrl }} onPress={() => props.navigation.navigate('UserForm', user)} />
                 <ListItem.Content>
                     <ListItem.Title>{user.name}</ListItem.Title>
                     <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
-                </ListItem.Content>      
+                </ListItem.Content>
+                <ListItem>{getActions(user)}</ListItem>
             </ListItem>
         )
     }
